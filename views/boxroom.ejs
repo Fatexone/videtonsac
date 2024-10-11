@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salle de boxe</title>
+  <link rel="stylesheet" href="/styles/boxroom.css"> <!-- Inclusion du fichier CSS spécifique -->
+  <link rel="stylesheet" href="/styles/headBoxroom.css"> <!-- Inclusion du CSS pour la banderole -->
+</head>
+<body>
+
+  <%- include('headBoxroom.ejs') %>
+
+
+
+
+  <div class="boxroom-container">
+    <h1>Salle de boxe</h1>
+
+    <p class="user-status">Utilisateur connecté</p>
+
+
+    <form action="/logout" method="POST">
+      <input type="hidden" name="redirectPage" value="/boxroom">
+      <button type="submit" class="logout-btn">Se déconnecter</button>
+    </form>
+
+    <p class="hit-counter">Coups reçus : <%= bag.hits %></p>
+
+    <div id="impact-container" style="position: relative; width: 100%; height: 400px;">
+      <img id="punching-bag" src="/images/IM1.png" alt="Boxing Bag" style="width: 100%; height: 100%;">
+    </div>
+
+    <!-- Emotion Selector -->
+    <label for="emotion-selector"></label>
+    <select id="emotion-selector" name="emotion">
+      <option value="">-- Sélectionnez une émotion --</option>
+      <option value="Joie">Joie</option>
+      <option value="Tristesse">Tristesse</option>
+      <option value="Colère">Colère</option>
+      <option value="Dégoût">Dégoût</option>
+      <option value="Autre">Autre</option>
+    </select>
+
+    <!-- Placeholder for the quote -->
+    <div id="quote-display" style="margin-top: 15px; font-style: italic; color: #555;"></div>
+
+    <!-- Formulaire pour envoyer un message et frapper le sac -->
+    <form id="punch-form">
+      <textarea id="message-textarea" name="message" placeholder="Écrivez votre message" required style="display: none;"></textarea>
+      <input type="hidden" name="username" value="<%= user.username %>"> 
+
+      <button id="boxing-glove" class="submit-btn" type="button">
+        <img src="/images/boxing-glove.png" alt="Gant de boxe" style="width: 50px; height: 50px;">
+      </button>
+    </form>
+
+    <h2>Messages</h2>
+    <ul class="messages-list">
+      <% messages.forEach(message => { %>
+        <li class="message-item">
+          <strong>Anonyme :</strong> <%= message.content %><br>
+          <small>Combinaison : <%= message.combo %> - <%= message.createdAt.toLocaleString() %></small>
+          
+          <div>
+            <button class="like-btn" data-message-id="<%= message._id %>">Like (<span class="like-count"><%= message.likes.length %></span>)</button>
+            <button class="unlike-btn" data-message-id="<%= message._id %>">Unlike (<span class="unlike-count"><%= message.unlikes.length %></span>)</button>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+
+  <script src="/js/headBoxroom.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.17.1/matter.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+  <script src="/js/boxroom.js"></script>
+  <script>
+
+
+
+
+const quotes = {
+    Joie: [
+        "La joie est le soleil qui chasse l'hiver du visage humain.",
+        "Rendez-vous heureux et les autres se joindront à vous.",
+        "La joie n'est pas seulement une chose à ressentir, c'est une chose à cultiver.",
+        "La véritable joie est de vivre le moment présent.",
+        "Cultivez la joie dans votre cœur et elle fleurira autour de vous.",
+        "La joie est contagieuse; partagez-la avec ceux que vous aimez.",
+        "Un cœur joyeux est le meilleur antidote à la tristesse.",
+        "La joie vient souvent des petites choses de la vie.",
+        "La joie est un choix, pas une condition.",
+        "La gratitude est la clé qui ouvre la porte de la joie."
+    ],
+    Tristesse: [
+        "La tristesse est un mur entre deux jardins.",
+        "Il n'y a pas de nuit si longue qu'elle ne finisse par se lever.",
+        "La tristesse est le prix que nous payons pour aimer.",
+        "La tristesse ne dure pas toujours; elle finit par passer.",
+        "Les larmes sont parfois le meilleur moyen d'exprimer ce que les mots ne peuvent pas.",
+        "La tristesse peut être un enseignant puissant, si nous lui permettons.",
+        "Dans la tristesse, nous trouvons souvent notre force intérieure.",
+        "Chaque nuage a une doublure d'argent; la tristesse aussi.",
+        "La tristesse est une étape nécessaire sur le chemin de la guérison.",
+        "Accepter la tristesse est la première étape pour retrouver la joie."
+    ],
+    Colère: [
+        "La colère est un feu qui peut détruire ou purifier.",
+        "La colère, c'est comme une tempête, elle doit passer.",
+        "Ne laisse pas la colère prendre le dessus, la paix est plus précieuse.",
+        "La colère est souvent une réaction à la douleur non exprimée.",
+        "Canalisez votre colère en action positive.",
+        "La colère mal gérée ne fait que créer plus de souffrance.",
+        "Apprendre à maîtriser votre colère est une forme de pouvoir.",
+        "La colère peut être un signal pour apporter des changements.",
+        "Exprimez votre colère avec sagesse, pas avec violence.",
+        "La colère peut être un excellent moteur pour le changement."
+    ],
+    Dégoût: [
+        "Le dégoût est un sentiment puissant, mais ne laisse pas son poison te consumer.",
+        "Il faut parfois dégoûter pour se libérer.",
+        "Le dégoût nous montre ce que nous ne voulons pas être.",
+        "Le dégoût peut nous guider vers une vie plus authentique.",
+        "Apprenez à transformer le dégoût en motivation pour le changement.",
+        "Le dégoût est parfois un signe d'éveil spirituel.",
+        "Évitez le dégoût en choisissant la positivité.",
+        "Accepter le dégoût peut ouvrir la porte à la compréhension.",
+        "Le dégoût est une émotion qui peut nous enseigner beaucoup.",
+        "Ne laissez pas le dégoût vous retenir, mais utilisez-le comme une force."
+    ],
+    Autre: [
+        "L'incertitude est une belle opportunité pour la créativité.",
+        "Chaque émotion a sa valeur, même celle que l'on ne comprend pas.",
+        "La diversité des émotions enrichit notre expérience humaine.",
+        "Il est important d'accepter toutes nos émotions, qu'elles soient positives ou négatives.",
+        "Chaque sentiment a quelque chose à nous enseigner.",
+        "La réflexion sur nos émotions nous aide à mieux comprendre nos choix.",
+        "Les émotions sont des indicateurs, pas des dictateurs.",
+        "La vie est un mélange de joie, de tristesse et d'autres émotions.",
+        "Les émotions complexes peuvent mener à une compréhension plus profonde de soi.",
+        "Ne fuyez pas vos émotions; apprenez à les embrasser."
+    ]
+};
+
+
+
+
+
+
+    // Show the textarea and quote when an emotion is selected
+    const emotionSelector = document.getElementById('emotion-selector');
+    const messageTextarea = document.getElementById('message-textarea');
+    const quoteDisplay = document.getElementById('quote-display');
+
+    emotionSelector.addEventListener('change', () => {
+      const selectedEmotion = emotionSelector.value;
+
+      if (selectedEmotion) {
+        messageTextarea.style.display = 'block'; // Show textarea
+        const randomQuote = quotes[selectedEmotion][Math.floor(Math.random() * quotes[selectedEmotion].length)];
+        quoteDisplay.textContent = randomQuote; // Display the quote
+      } else {
+        messageTextarea.style.display = 'none'; // Hide textarea if no emotion is selected
+        quoteDisplay.textContent = ''; // Clear the quote display
+      }
+    });
+  </script>
+
+</body>
+</html>

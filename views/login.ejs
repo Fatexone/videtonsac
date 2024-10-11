@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion - Vide ton sac</title>
+  <link rel="stylesheet" href="/styles/login.css"> <!-- Inclusion du fichier CSS spécifique au login -->
+</head>
+<body>
+  <%- include('head.ejs') %> <!-- Inclusion de la banderole ici -->
+
+  <div class="login-container">
+    <h1>Connexion à Vide ton sac</h1>
+
+    <!-- Vérifie s'il y a un message d'erreur et l'affiche -->
+    <% if (errorMessage) { %> 
+      <div class="error-message">
+        <%= errorMessage %>
+      </div>
+    <% } %>
+
+    <form action="/login" method="POST">
+      <label for="username">Nom d'utilisateur :</label>
+      <input type="text" name="username" required><br>
+
+      <label for="password">Mot de passe :</label>
+      <input type="password" name="password" required><br>
+
+      <button type="submit">Se connecter</button>
+    </form>
+
+    <p>Pas encore inscrit ? <a href="/register">Demander un accès</a></p>
+
+    <!-- Bouton retour à l'accueil -->
+    <a href="/" class="return-btn">Retour à l'accueil</a>
+  </div>
+
+  <!-- Inclusion de head.js pour faire défiler les textes -->
+  <script src="/js/head.js"></script>
+</body>
+</html>

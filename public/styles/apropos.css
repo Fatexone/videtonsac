@@ -1,0 +1,90 @@
+/* Styles pour la page "À propos" */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Merriweather', serif; /* Utilisation d'une police élégante */
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  .about-container {
+    width: 80%;
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+  }
+  
+  h2 {
+    font-size: 2.5rem;
+    color: #00539C;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  ul {
+    margin-left: 20px;
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
+  li {
+    margin-bottom: 15px;
+  }
+  
+  .closing-text {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-top: 30px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 15px 30px;
+    background-color: #00539C;
+    color: white;
+    border: none;
+    text-decoration: none;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    text-align: center;
+  }
+  
+  .btn:hover {
+    background-color: #004080;
+  }
+  
+  /* Styles responsives */
+  @media (max-width: 768px) {
+    .about-container {
+      width: 95%;
+      padding: 20px;
+    }
+  
+    h2 {
+      font-size: 2rem;
+    }
+  
+    p, li {
+      font-size: 1rem;
+    }
+  
+    .btn {
+      padding: 10px 20px;
+    }
+  }
+  

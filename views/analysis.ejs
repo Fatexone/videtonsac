@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Résultats d'analyse</title>
+  <link rel="stylesheet" href="/styles/analysis.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+</head>
+<body>
+  <h1>Résultats de l'analyse des messages</h1>
+
+  <!-- Section pour afficher les résultats individuels dans un tableau -->
+
+  <section class="analysis-results">
+    <h2>Résultats individuels des analyses</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Message</th>
+          <th>Sentiment</th>
+          <th>Joie</th>
+          <th>Tristesse</th>
+          <th>Colère</th>
+          <th>Dégoût</th>
+          <th>Peur</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% analysisResults.forEach(result => { %>
+          <tr>
+            <td><%= result.content %></td>
+            <td><%= result.analysis.sentiment.document.label %></td>
+            <td><%= result.analysis.emotion.document.emotion.joy %></td>
+            <td><%= result.analysis.emotion.document.emotion.sadness %></td>
+            <td><%= result.analysis.emotion.document.emotion.anger %></td>
+            <td><%= result.analysis.emotion.document.emotion.disgust %></td>
+            <td><%= result.analysis.emotion.document.emotion.fear %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </section>
+
+
+
+
+
+  <!-- Recommandations pour les dirigeants -->
+  <section class="recommendations">
+    <h2>Recommandations pour les dirigeants</h2>
+    <ul>
+      <% if (averageSadness > 0.5) { %>
+        <li>"Encouragez une culture de soutien mutuel. Les employés montrent des signes de tristesse."</li>
+        <li>"Proposez des activités de team building pour réduire l'isolement."</li>
+      <% } %>
+      <% if (averageAnger > 0.5) { %>
+        <li>"Travaillez sur la résolution des conflits internes. La colère est présente dans les ressentis."</li>
+        <li>"Offrez des formations en gestion des conflits pour mieux gérer les tensions."</li>
+      <% } %>
+      <% if (averageJoy > 0.5) { %>
+        <li>"Renforcez l'esprit d'équipe en encourageant les initiatives positives. La joie est un moteur pour la productivité."</li>
+      <% } %>
+      <% if (averageFear > 0.5) { %>
+        <li>"Apportez plus de clarté sur les objectifs de l'entreprise pour réduire l'anxiété des employés."</li>
+        <li>"Créez des espaces de discussion pour exprimer les inquiétudes des employés."</li>
+      <% } %>
+    </ul>
+</section>
+
+
+
+  <!-- Tableau de notation sur l'ambiance générale -->
+  <section class="score-table">
+    <h2>Tableau de notation générale</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Critère</th>
+          <th>Note / 20</th>
+          <th>Statut</th>
+          <th>Suggestions d'Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ambiance générale</td>
+          <td><%= ambianceScore %>/20</td>
+          <td>
+            <% if (ambianceScore < 10) { %>
+              <span style="color: red;">Alerte</span>
+            <% } else { %>
+              <span style="color: green;">Satisfaisant</span>
+            <% } %>
+          </td>
+          <td>
+            <% if (ambianceScore < 10) { %>
+              Organisez des réunions d'équipe pour identifier les sources de malaise.
+            <% } else { %>
+              Continuez à encourager la cohésion d'équipe.
+            <% } %>
+          </td>
+        </tr>
+        <tr>
+          <td>Bien-être des employés</td>
+          <td><%= wellBeingScore %>/20</td>
+          <td>
+            <% if (wellBeingScore < 10) { %>
+              <span style="color: red;">Alerte</span>
+            <% } else { %>
+              <span style="color: green;">Satisfaisant</span>
+            <% } %>
+          </td>
+          <td>
+            <% if (wellBeingScore < 10) { %>
+              Mettre en place un programme de soutien psychologique ou de mentorat.
+            <% } else { %>
+              Renforcez le bien-être avec des initiatives positives (activités de groupe).
+            <% } %>
+          </td>
+        </tr>
+        <tr>
+          <td>Stress / Frustration</td>
+          <td><%= stressScore %>/20</td>
+          <td>
+            <% if (stressScore < 10) { %>
+              <span style="color: red;">Alerte</span>
+            <% } else { %>
+              <span style="color: green;">Satisfaisant</span>
+            <% } %>
+          </td>
+          <td>
+            <% if (stressScore < 10) { %>
+              Identifiez les facteurs de stress et proposez des solutions concrètes (réduction de la charge de travail, dialogue).
+            <% } else { %>
+              Encouragez la communication ouverte pour éviter l'accumulation de stress.
+            <% } %>
+          </td>
+        </tr>
+        <tr>
+          <td>Motivation</td>
+          <td><%= motivationScore %>/20</td>
+          <td>
+            <% if (motivationScore < 10) { %>
+              <span style="color: red;">Alerte</span>
+            <% } else { %>
+              <span style="color: green;">Satisfaisant</span>
+            <% } %>
+          </td>
+          <td>
+            <% if (motivationScore < 10) { %>
+              Réévaluez les objectifs de carrière de vos employés et proposez des perspectives d'évolution.
+            <% } else { %>
+              Continuez à motiver vos équipes avec des objectifs clairs et atteignables.
+            <% } %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Section pour le graphique des émotions -->
+  <section class="emotion-chart">
+    <canvas id="emotionChart"
+      width="400" height="200"
+      data-labels='<%= JSON.stringify(analysisResults.map(result => result.content)) %>'
+      data-joy-data='<%= JSON.stringify(analysisResults.map(result => result.analysis.emotion.document.emotion.joy)) %>'
+      data-sadness-data='<%= JSON.stringify(analysisResults.map(result => result.analysis.emotion.document.emotion.sadness)) %>'
+      data-anger-data='<%= JSON.stringify(analysisResults.map(result => result.analysis.emotion.document.emotion.anger)) %>'
+      data-disgust-data='<%= JSON.stringify(analysisResults.map(result => result.analysis.emotion.document.emotion.disgust)) %>'
+      data-fear-data='<%= JSON.stringify(analysisResults.map(result => result.analysis.emotion.document.emotion.fear)) %>'
+    ></canvas>
+  </section>
+
+  <!-- Bouton retour à l'accueil -->
+  <section class="return-home">
+    <button onclick="window.location.href='/'">Retour à l'accueil</button>
+  </section>
+
+  <script src="/js/analysis.js"></script>
+</body>
+</html>
+
+<!-- Button to navigate to the Watson explanation page -->
+<section class="watson-explanation">
+  <a href="/watson-info" class="info-btn">Comment fonctionne Watson ?</a>
+</section>

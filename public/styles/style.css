@@ -1,12 +1,87 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    text-align: center;
-    padding: 50px;
+  background-color: #f0f0f0;
+  text-align: center;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.punching-bag-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+#punching-bag {
+  width: 200px;
+  transition: transform 0.3s ease-in-out;
+}
+
+#impact-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Les impacts ne doivent pas interagir */
+}
+
+/* Style des impacts de coup */
+.impact {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  animation: impact-animation 0.5s ease-out forwards;
+}
+
+/* Animation des impacts de coup */
+@keyframes impact-animation {
+  0% {
+    transform: scale(0);
+    opacity: 0;
   }
-  
-  h1 {
-    color: #00539C;
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
   }
-  
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Centrer le formulaire et les messages */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+textarea, select, button {
+  margin-bottom: 10px;
+  width: 80%;
+}
+
+#message-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 20%;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+#message-list li {
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}

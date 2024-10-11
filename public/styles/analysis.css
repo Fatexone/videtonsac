@@ -1,0 +1,159 @@
+/* Style global */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f4f4f9;
+  color: #333;
+  text-align: center;
+}
+
+/* Titres principaux */
+h1 {
+  color: #00539C;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+/* Titres des sections */
+h2 {
+  font-size: 2rem;
+  color: #1B1F3B;
+  margin-bottom: 15px;
+}
+
+/* Style pour les sections pour les rendre plus espacées */
+section {
+  margin-bottom: 40px;
+}
+
+/* Liste des messages analysés */
+.analysis-results ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.analysis-results li {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
+  padding: 15px;
+  text-align: left;
+  border-radius: 8px;
+}
+
+.analysis-results li p {
+  margin: 5px 0;
+}
+
+/* Recommandations */
+.recommendations ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.recommendations li {
+  background-color: #e3f2fd;
+  border-left: 5px solid #00539C;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+  border-radius: 5px;
+}
+
+/* Tableau de notation */
+.score-table table {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.score-table th, .score-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.score-table th {
+  background-color: #00539C;
+  color: white;
+}
+
+.score-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.score-table tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+.score-table td span {
+  font-weight: bold;
+}
+
+/* Style pour le graphique */
+canvas {
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  .score-table th, .score-table td {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  .analysis-results li {
+    padding: 10px;
+  }
+
+  .recommendations li {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .score-table th, .score-table td {
+    padding: 6px;
+    font-size: 0.85rem;
+  }
+}
+
+.return-home {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.return-home button {
+  background-color: #00539C;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.return-home button:hover {
+  background-color: #003f7f;
+}

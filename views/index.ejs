@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vide ton sac</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/index.css"> <!-- Inclusion du style général -->
+</head>
+<body>
+  <%- include('head.ejs') %> <!-- Inclusion de l'en-tête ici -->
+
+  <div class="container">
+    <div class="content">
+      <h1>Bienvenue sur Vide ton sac</h1>
+      <p>Exprimez vos sentiments de manière anonyme.</p>
+      <a href="/login" class="btn">Se connecter</a>
+      <a href="/a-propos" class="btn">À propos</a> <!-- Redirection vers la nouvelle page "À propos" -->
+    </div>
+
+    <!-- Conteneur pour les citations défilantes -->
+    <div class="quote-container">
+      <p class="quote"></p>
+    </div>
+  </div>
+
+  <!-- Scripts JavaScript -->
+  <script src="/js/index.js"></script> <!-- Script pour gérer le bouton "À propos" -->
+  <script src="/js/head.js"></script> <!-- Script pour gérer les citations -->
+</body>
+</html>

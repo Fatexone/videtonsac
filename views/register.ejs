@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enregistrement - Vide ton sac</title>
+  <link rel="stylesheet" href="/styles/register.css"> <!-- Inclusion du fichier CSS spécifique au register -->
+</head>
+<body>
+  <%- include('head.ejs') %> <!-- Inclusion de la banderole ici -->
+
+  <div class="register-container">
+    <h1>Enregistrement</h1>
+    <form action="/register" method="POST">
+      <label for="username">Nom d'utilisateur :</label>
+      <input type="text" name="username" id="username" required><br>
+
+      <label for="email">Email :</label>
+      <input type="email" name="email" id="email" required><br>
+
+      <label for="password">Mot de passe :</label>
+      <input type="password" name="password" id="password" required><br>
+
+      <button type="submit">S'enregistrer</button>
+    </form>
+  </div>
+
+  <!-- Inclusion de head.js pour faire défiler les textes -->
+  <script src="/js/head.js"></script>
+</body>
+</html>

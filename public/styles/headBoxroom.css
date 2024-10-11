@@ -1,0 +1,30 @@
+/* headBoxroom.css */
+.boxroom-banner {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #000; /* Noir pour le bandeau */
+    color: #fff; /* Texte en blanc */
+    text-align: center;
+    padding: 10px 0;
+    font-size: 1.2rem;
+    font-family: 'Courier New', Courier, monospace;
+    z-index: 10; /* Assure que le bandeau est au-dessus des autres éléments */
+    overflow: hidden;
+}
+
+.scrolling-boxroom-quote {
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    animation: boxroomScroll 15s linear infinite;
+}
+
+@keyframes boxroomScroll {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}

@@ -1,0 +1,30 @@
+/* head.css */
+.quote-banner {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 1.2rem;
+  font-family: 'Courier New', Courier, monospace;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.scrolling-quote {
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  animation: scroll 15s linear infinite;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

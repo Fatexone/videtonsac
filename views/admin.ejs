@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration</title>
+  <link rel="stylesheet" href="/styles/admin.css">
+</head>
+<body>
+
+  <!-- Titre de la page -->
+  <div class="admin-header">
+    <h1>Administration</h1>
+    <!-- Bouton de déconnexion -->
+    <form action="/logout" method="POST">
+      <input type="hidden" name="redirectPage" value="/admin">
+      <button type="submit" class="logout-btn">Se déconnecter</button>
+    </form>
+  </div>
+
+
+  <!-- Section pour accéder à l'analyse des sentiments -->
+  <section class="admin-section">
+    <h2>Analyse des Sentiments</h2>
+    <form action="/analysis" method="GET">
+      <button type="submit" class="analysis-btn">Analyser les données</button>
+    </form>
+  </section>
+
+  <!-- Gestion du sac de boxe -->
+  <section class="admin-section">
+    <h2>Sac de boxe</h2>
+    <% if (bag) { %>
+      <p>Coups reçus : <strong><%= bag.hits %></strong></p>
+      <p>Couleur actuelle : <strong><%= bag.color %></strong></p>
+
+      <!-- Affichage de l'image du sac de boxe selon la couleur -->
+      <div class="image-container">
+        <% if (bag.color === 'brown') { %>
+          <img src="/images/bag-brown.png" alt="Sac de boxe marron" class="punching-bag">
+        <% } else if (bag.color === 'blue') { %>
+          <img src="/images/bag-blue.png" alt="Sac de boxe bleu" class="punching-bag">
+        <% } else if (bag.color === 'green') { %>
+          <img src="/images/bag-green.png" alt="Sac de boxe vert" class="punching-bag">
+        <% } else if (bag.color === 'red') { %>
+          <img src="/images/bag-red.png" alt="Sac de boxe rouge" class="punching-bag">
+        <% } %>
+      </div>
+    <% } else { %>
+      <p>Le sac de boxe n'est pas encore configuré.</p>
+    <% } %>
+
+    <!-- Formulaire pour réinitialiser le sac de boxe -->
+    <form action="/reset-bag" method="POST" class="reset-form">
+      <button type="submit" class="reset-btn">Réinitialiser le sac</button>
+    </form>
+  </section>
+
+
+
+  
+
+
+
+
+
+
+
+<!-- Section pour les messages soumis -->
+<section class="admin-section">
+  <h2>Messages soumis par utilisateur</h2>
+
+  <!-- Formulaire pour supprimer les messages sélectionnés -->
+  <form id="delete-messages-form" action="/delete-messages" method="POST">
+    <!-- Bouton pour tout sélectionner -->
+    <div>
+      <input type="checkbox" id="select-all" onclick="selectAllMessages(this)">
+      <label for="select-all">Tout sélectionner</label>
+    </div>
+
+    <ul>
+      <% if (messages.length > 0) { %>
+        <!-- Groupement des messages par utilisateur -->
+        <% const groupedMessages = {}; %>
+        <% messages.forEach(message => { %>
+          <% if (!groupedMessages[message.username]) { %>
+            <% groupedMessages[message.username] = []; %>
+          <% } %>
+          <% groupedMessages[message.username].push(message); %>
+        <% }) %>
+
+        <!-- Parcourir les utilisateurs et afficher leurs messages -->
+        <% Object.keys(groupedMessages).forEach(username => { %>
+          <li class="user-section">
+            <h3>Messages postés par <%= username %> :</h3>
+            <ul>
+              <% groupedMessages[username].forEach(message => { %>
+                <li class="message-item">
+                  <input type="checkbox" name="messageIds" value="<%= message._id %>"> <!-- Case à cocher pour chaque message -->
+                  <p><strong>Message :</strong> <%= message.content %></p>
+                  <!-- Ajout de la date et heure de création -->
+                  <p><small><strong>Date :</strong> <%= message.createdAt.toLocaleDateString() %> à <%= message.createdAt.toLocaleTimeString() %></small></p>
+                  <!-- Ajout du nombre de likes et unlikes -->
+                  <p><small><strong>Likes :</strong> <%= message.likes.length %> | <strong>Unlikes :</strong> <%= message.unlikes.length %></small></p>
+                  <form action="/delete-message/<%= message._id %>" method="POST">
+                    <button type="submit" class="delete-btn">Supprimer</button>
+                  </form>
+                </li>
+              <% }) %>
+            </ul>
+          </li>
+        <% }) %>
+      <% } else { %>
+        <p>Aucun message soumis pour l'instant.</p>
+      <% } %>
+    </ul>
+
+    <!-- Bouton pour supprimer les messages sélectionnés -->
+    <button type="submit" class="delete-btn">Supprimer les messages sélectionnés</button>
+  </form>
+
+  <!-- Formulaire pour supprimer tous les messages -->
+  <form action="/delete-all-messages" method="POST">
+    <button type="submit" class="delete-all-btn">Supprimer tous les messages</button>
+  </form>
+</section>
+
+
+
+
+
+
+
+
+
+
+  <!-- Formulaire d'ajout d'utilisateur -->
+  <section class="admin-section">
+    <h2>Ajouter un utilisateur autorisé</h2>
+    <form action="/admin/add-user" method="POST" class="add-user-form">
+      <label for="email">Adresse email :</label>
+      <input type="email" name="email" required><br>
+
+      <label for="username">Nom d'utilisateur :</label>
+      <input type="text" name="username" required><br>
+
+      <label for="password">Mot de passe :</label>
+      <input type="password" name="password" required><br>
+
+      <button type="submit" class="add-user-btn">Ajouter l'utilisateur</button>
+    </form>
+  </section>
+
+  <!-- Validation des utilisateurs en attente -->
+  <section class="admin-section">
+    <h2>Valider les utilisateurs en attente</h2>
+    <ul>
+      <% if (pendingUsers.length > 0) { %>
+        <% pendingUsers.forEach(user => { %>
+          <li class="user-item">
+            <p>Email : <%= user.email %></p>
+            <p>Nom d'utilisateur : <%= user.username %></p>
+            <form action="/admin/approve-user/<%= user._id %>" method="POST">
+              <button type="submit" class="approve-btn">Approuver</button>
+            </form>
+          </li>
+        <% }) %>
+      <% } else { %>
+        <p>Aucun utilisateur en attente de validation.</p>
+      <% } %>
+    </ul>
+  </section>
+
+  <!-- Section pour afficher et supprimer les utilisateurs autorisés -->
+  <section class="admin-section">
+    <h2>Gérer les utilisateurs</h2>
+    <ul>
+      <% if (allUsers.length > 0) { %>
+        <% allUsers.forEach(user => { %>
+          <li class="user-item">
+            <p>Nom d'utilisateur : <strong><%= user.username %></strong></p>
+            <p>Email : <strong><%= user.email %></strong></p>
+            <p>Status : <strong><%= user.isAdmin ? "Administrateur" : "Utilisateur" %></strong></p>
+            <form action="/admin/delete-user/<%= user._id %>" method="POST">
+              <button type="submit" class="delete-user-btn" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</button>
+            </form>
+          </li>
+        <% }) %>
+      <% } else { %>
+        <p>Aucun utilisateur trouvé.</p>
+      <% } %>
+    </ul>
+  </section>
+
+  <script>
+    // Fonction pour sélectionner ou désélectionner toutes les cases
+    function selectAllMessages(selectAllCheckbox) {
+      const checkboxes = document.querySelectorAll('input[name="messageIds"]');
+      checkboxes.forEach(checkbox => checkbox.checked = selectAllCheckbox.checked);
+    }
+  </script>
+
+</body>
+</html>
